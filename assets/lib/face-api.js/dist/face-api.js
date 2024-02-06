@@ -1392,8 +1392,8 @@
           this.anchorPosition = anchorPosition || AnchorPosition.TOP_LEFT;
           this.backgroundColor = backgroundColor || 'rgba(0, 0, 0, 0.5)';
           this.fontColor = fontColor || 'rgba(255, 255, 255, 1)';
-          this.fontSize = fontSize || 14;
-          this.fontStyle = fontStyle || 'Georgia';
+          this.fontSize =  24;
+          this.fontStyle = fontStyle || 'Arial';
           this.padding = padding || 4;
       }
       return DrawTextFieldOptions;
@@ -2564,7 +2564,7 @@
       return FaceProcessor;
   }(NeuralNetwork));
 
-  var FACE_EXPRESSION_LABELS = ['neutral', 'happy', 'sad', 'angry', 'fearful', 'disgusted', 'surprised'];
+  var FACE_EXPRESSION_LABELS = ['Neutro', 'Feliz', 'Triste', 'Bravo', 'Medo', 'Desgosto', 'Surpresa'];
   var FaceExpressions = /** @class */ (function () {
       function FaceExpressions(probabilities) {
           var _this = this;
@@ -2986,8 +2986,8 @@
   }
 
   (function (Gender) {
-      Gender["FEMALE"] = "female";
-      Gender["MALE"] = "male";
+      Gender["FEMALE"] = "Mulher";
+      Gender["MALE"] = "Homem";
   })(exports.Gender || (exports.Gender = {}));
 
   var AgeGenderNet = /** @class */ (function (_super) {

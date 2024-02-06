@@ -1,25 +1,26 @@
-const cam = document.getElementById('cam')
+const video = document.getElementById('video')
 
 const startVideo = () => {
   navigator.mediaDevices.enumerateDevices()
-    .then(devices => {
-      if (Array.isArray(devices)) {
-        devices.forEach(device => {
-          if(device.kind === 'videoinput') {
-            console.log(device.label)
-            if(device.label.includes('C270')) {
-              navigator.getUserMedia(
-                { video: {
-                  deviceId: device.deviceId
-                }},
-                stream => cam.srcObject = stream,
-                error => console.error(error)
-              )
-            }
-          }
-        })
-      }
-    })
+  .then(devices => {
+    if (Array.isArray(devices)) {
+      devices.forEach(device => {
+        if(device.kind === 'videoinput') {
+          console.log(device.label)
+          // if(device.label.includes('6689')) {
+            navigator.getUserMedia(
+              { video: {
+                deviceId: device.deviceId
+              }},
+              stream => video.srcObject = stream,
+              error => console.error(error)
+            )
+          // }	
+        }
+      })
+    
+    }
+  })
 }
 
 Promise.all([
@@ -31,19 +32,19 @@ Promise.all([
   faceapi.nets.ssdMobilenetv1.loadFromUri('./assets/lib/face-api.js/models')
 ]).then(startVideo)
 
-cam.addEventListener('play', async () => {
-  const canvas = faceapi.createCanvasFromMedia(cam)
+video.addEventListener('play', async () => {
+  const canvas = faceapi.createCanvasFromMedia(video)
   const canvasSize = {
-    width: cam.width,
-    height: cam.height
+    width: video.width,
+    height: 760
   }
   faceapi.matchDimensions(canvas, canvasSize)
   document.body.appendChild(canvas)
   setInterval(async () => {
     const detections = await faceapi
       .detectAllFaces(
-        cam, 
-        new faceapi.TinyFaceDetectorOptions()
+        video, 
+        new faceapi.TinyFaceDetectorOptions({  scoreThreshold: 0.6})
       )
       .withFaceLandmarks()
       .withFaceExpressions()
@@ -57,7 +58,7 @@ cam.addEventListener('play', async () => {
     resizedDetections.forEach(detection => {
       const { age, gender, genderProbability} = detection
       new faceapi.draw.DrawTextField([
-        `${parseInt(age, 10)} years`,
+        `${parseInt(age, 10)} anos`,
         `${gender} (${parseInt(genderProbability * 100, 10)})`
       ], detection.detection.box.topRight).draw(canvas)
     })
